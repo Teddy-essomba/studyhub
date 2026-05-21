@@ -1,26 +1,58 @@
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [message, setMessage] = useState('');
+  const [tasks, setTasks] = useState([]);
+  const [title, setTitle] = useState('');
+
+  async function fetchTasks() {
+    const response = await fetch('http://127.0.0.1:8000/api/tasks/');
+    const data = await response.json();
+    setTasks(data);
+  }
 
   useEffect(() => {
-    async function fetchMessage() {
-      const response = await fetch(
-        'http://127.0.0.1:8000/api/hello/'
-      );
-
-      const data = await response.json();
-
-      setMessage(data.message);
-    }
-
-    fetchMessage();
+    fetchTasks();
   }, []);
+
+  async function addTask(e) {
+    e.preventDefault();
+
+    const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: title,
+        completed: false,
+      }),
+    });
+
+    const newTask = await response.json();
+    setTasks([...tasks, newTask]);
+    setTitle('');
+  }
 
   return (
     <div>
-      <h1>StudyHub</h1>
-      <p>{message}</p>
+      <h1>StudyHub Tasks</h1>
+
+      <form onSubmit={addTask}>
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter a task"
+        />
+        <button type="submit">Add</button>
+      </form>
+
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            {task.title} {task.completed ? '✅' : '❌'}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
