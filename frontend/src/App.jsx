@@ -33,6 +33,32 @@ function App() {
     setTitle('');
   }
 
+  async function toggleTask(task) {
+
+  const response = await fetch(`http://127.0.0.1:8000/api/tasks/${task.id}/`, {
+
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+
+    body: JSON.stringify({
+      completed: !task.completed,
+    }),
+
+  });
+
+  const updatedTask = await response.json();
+
+  setTasks(tasks.map((t) => {
+    if (t.id === updatedTask.id) {
+      return updatedTask;
+    }
+    return t;
+  }));
+
+}
+
   return (
     <div>
       <h1>StudyHub Tasks</h1>
@@ -47,12 +73,16 @@ function App() {
       </form>
 
       <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            {task.title} {task.completed ? '✅' : '❌'}
-          </li>
-        ))}
-      </ul>
+      {tasks.map((task) => (
+        <li
+          key={task.id}
+          onClick={() => toggleTask(task)}
+          style={{ cursor: 'pointer' }}
+        >
+          {task.title} {task.completed ? '✅' : '❌'}
+        </li>
+      ))}
+    </ul>
     </div>
   );
 }
