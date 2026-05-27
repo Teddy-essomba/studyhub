@@ -49,7 +49,6 @@ function App() {
   });
 
   const updatedTask = await response.json();
-
   setTasks(tasks.map((t) => {
     if (t.id === updatedTask.id) {
       return updatedTask;
@@ -58,6 +57,18 @@ function App() {
   }));
 
 }
+
+
+async function deleteTask(id) {
+  const response = await fetch(`http://127.0.0.1:8000/api/tasks/${id}/`, {
+    method: 'DELETE',
+  });
+
+  if (response.ok) {
+    setTasks(tasks.filter((task) => task.id !== id));
+  }
+}
+
 
   return (
     <div>
@@ -74,12 +85,20 @@ function App() {
 
       <ul>
       {tasks.map((task) => (
-        <li
-          key={task.id}
-          onClick={() => toggleTask(task)}
-          style={{ cursor: 'pointer' }}
-        >
-          {task.title} {task.completed ? '✅' : '❌'}
+        <li key={task.id}>
+          <span
+            onClick={() => toggleTask(task)}
+            style={{
+              cursor: 'pointer',
+              textDecoration: task.completed ? 'line-through' : 'none',
+            }}
+          >
+            {task.title} {task.completed ? '✅' : '❌'}
+          </span>
+
+          <button onClick={() => deleteTask(task.id)}>
+            Delete
+          </button>
         </li>
       ))}
     </ul>
