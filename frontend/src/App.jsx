@@ -14,6 +14,7 @@ function App() {
     fetchTasks();
   }, []);
 
+
   async function addTask(e) {
     e.preventDefault();
 
@@ -28,7 +29,7 @@ function App() {
       }),
     });
 
-  
+
 
     const newTask = await response.json();
     setTasks([...tasks, newTask]);
