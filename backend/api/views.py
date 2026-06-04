@@ -48,4 +48,4 @@ def task_detail(request, pk):
     if request.method == 'DELETE':
         task.delete()
         return Response(status=204)
-    
+

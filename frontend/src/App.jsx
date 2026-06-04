@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -31,7 +32,6 @@ function App() {
       }),
     });
 
-
     const newTask = await response.json();
     setTasks([...tasks, newTask]);
     setTitle('');
@@ -61,7 +61,6 @@ function App() {
 
 }
 
-
 async function deleteTask(id) {
   const response = await fetch(`http://127.0.0.1:8000/api/tasks/${id}/`, {
     method: 'DELETE',
@@ -73,22 +72,21 @@ async function deleteTask(id) {
 }
 
   return (
-  <div>
+  <div className="app">
     <h1>StudyHub Tasks</h1>
+    {/* 1. Input area */}
+    <TaskForm title={title} setTitle={setTitle} addTask={addTask} />
 
-    <TaskForm
-      title={title}
-      setTitle={setTitle}
-      addTask={addTask}
-    />
+    {/* 2. List container */}
+    <TaskList tasks={tasks} toggleTask={toggleTask} deleteTask={deleteTask} />
 
-    <TaskList
-      tasks={tasks}
-      toggleTask={toggleTask}
-      deleteTask={deleteTask}
-    />
+
   </div>
 );
 }
 
 export default App;
+
+
+
+
