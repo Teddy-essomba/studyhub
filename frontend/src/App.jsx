@@ -21,6 +21,11 @@ function App() {
   async function addTask(e) {
     e.preventDefault();
 
+    if (title.trim() === '') {
+    return;
+
+    }
+
     const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
       method: 'POST',
       headers: {
@@ -31,6 +36,13 @@ function App() {
         completed: false,
       }),
     });
+
+    
+    if (!response.ok) {
+    console.log('Task was not created');
+    return;
+
+  }
 
     const newTask = await response.json();
     setTasks([...tasks, newTask]);
@@ -79,7 +91,6 @@ async function deleteTask(id) {
 
     {/* 2. List container */}
     <TaskList tasks={tasks} toggleTask={toggleTask} deleteTask={deleteTask} />
-
 
   </div>
 );
