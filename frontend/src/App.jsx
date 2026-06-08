@@ -37,7 +37,7 @@ function App() {
       }),
     });
 
-    
+
     if (!response.ok) {
     console.log('Task was not created');
     return;
