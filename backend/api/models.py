@@ -16,4 +16,3 @@ class Task(models.Model):
     )
 
 
-
