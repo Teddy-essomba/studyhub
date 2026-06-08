@@ -6,7 +6,7 @@ import './App.css';
 function App() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('General');
 
   async function fetchTasks() {
     const response = await fetch('http://127.0.0.1:8000/api/tasks/');
@@ -24,8 +24,9 @@ function App() {
 
     if (title.trim() === '') {
     return;
-
     }
+
+
 
     const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
       method: 'POST',
@@ -50,7 +51,7 @@ function App() {
     const newTask = await response.json();
     setTasks([...tasks, newTask]);
     setTitle('');
-    setCategory('')
+    setCategory('General')
   }
 
 
@@ -93,7 +94,8 @@ async function deleteTask(id) {
   <div className="app">
     <h1>StudyHub Tasks</h1>
     {/* 1. Input area */}
-    <TaskForm title={title} setTitle={setTitle} addTask={addTask} />
+    <TaskForm title={title} setTitle={setTitle} addTask={addTask} category={category}
+    setCategory={setCategory}/>
 
     {/* 2. List container */}
     <TaskList tasks={tasks} toggleTask={toggleTask} deleteTask={deleteTask} />
