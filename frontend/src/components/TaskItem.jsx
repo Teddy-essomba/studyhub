@@ -11,9 +11,15 @@ function TaskItem({ task, toggleTask, deleteTask }) {
         {task.title} {task.completed ? '✅' : '❌'}
       </span>
 
+      <span>
+        {task.category} {task.due_date ? `⏰ Due: ${task.due_date}` : ''}
+      </span>
+
       <button onClick={() => deleteTask(task.id)}>
         Delete
       </button>
+
+
     </li>
   );
 }

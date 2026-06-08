@@ -6,6 +6,7 @@ import './App.css';
 function App() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('');
 
   async function fetchTasks() {
     const response = await fetch('http://127.0.0.1:8000/api/tasks/');
@@ -34,9 +35,11 @@ function App() {
       body: JSON.stringify({
         title: title,
         completed: false,
+        category: category,
+        due_date: '2026-06-15',
       }),
-    });
 
+    });
 
     if (!response.ok) {
     console.log('Task was not created');
@@ -47,7 +50,10 @@ function App() {
     const newTask = await response.json();
     setTasks([...tasks, newTask]);
     setTitle('');
+    setCategory('')
   }
+
+
 
   async function toggleTask(task) {
   const response = await fetch(`http://127.0.0.1:8000/api/tasks/${task.id}/`, {
