@@ -7,4 +7,3 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'completed', 'category', 'due_date']
 
 
-

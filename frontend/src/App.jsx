@@ -27,7 +27,6 @@ function App() {
     }
 
 
-
     const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
       method: 'POST',
       headers: {
@@ -53,7 +52,6 @@ function App() {
     setTitle('');
     setCategory('General')
   }
-
 
 
   async function toggleTask(task) {
