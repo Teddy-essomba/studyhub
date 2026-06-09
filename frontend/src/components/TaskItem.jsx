@@ -19,7 +19,6 @@ function TaskItem({ task, toggleTask, deleteTask }) {
         Delete
       </button>
 
-
     </li>
   );
 }
