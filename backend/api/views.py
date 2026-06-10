@@ -1,7 +1,9 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .models import Task
 from .serializers import TaskSerializer
+from rest_framework.permissions import IsAuthenticated
+
 
 """
 @api_view(['GET'])
@@ -12,9 +14,10 @@ def hello(request):
 """
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def task_list(request):
     if request.method == 'GET':
-        tasks = Task.objects.all()
+        tasks = Task.objects.filter(user=request.user)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
@@ -24,12 +27,14 @@ def task_list(request):
 
         if serializer.is_valid():
             serializer.save()  # 3. If it looks good, create and save the new Task in the database
+            serializer.save(user=request.user)
             return Response(serializer.data, status=201) # 4. Return the new task back as confirmation
         return Response(serializer.errors, status=400)
 
 
 
 @api_view(['PATCH', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def task_detail(request, pk):
     try:
         task = Task.objects.get(pk=pk)
